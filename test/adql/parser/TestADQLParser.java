@@ -163,17 +163,17 @@ public class TestADQLParser {
 		/* An identifier must be written only with digits, an underscore or
 		 * regular latin characters: */
 		try{
-			(new ADQLParser()).parseQuery("select grégory FROM aTable");
+			(new ADQLParser()).parseQuery("select gr\u00e9gory FROM aTable");
 		}catch(Throwable t){
 			assertEquals(ParseException.class, t.getClass());
-			assertTrue(t.getMessage().startsWith("Incorrect character encountered at l.1, c.10: \"\\u00e9\" ('"));
+			assertTrue(t.getMessage().startsWith("Incorrect character encountered at l.1, c.10: "));
 		}
 
 		// But in a string, delimited identifier or a comment, it is fine:
 		try{
-			(new ADQLParser()).parseQuery("select 'grégory' FROM aTable");
-			(new ADQLParser()).parseQuery("select \"grégory\" FROM aTable");
-			(new ADQLParser()).parseQuery("select * FROM aTable -- a comment by Grégory");
+			(new ADQLParser()).parseQuery("select 'gr\u00e9gory' FROM aTable");
+			(new ADQLParser()).parseQuery("select \"gr\u00e9gory\" FROM aTable");
+			(new ADQLParser()).parseQuery("select * FROM aTable -- a comment by Gr\u00e9gory");
 		}catch(Throwable t){
 			fail("This error should never occurs because all these queries have an accentuated character but at a correct place.");
 		}
